@@ -4,8 +4,10 @@ import serial
 import sys
 import rospy
 from std_msgs.msg import UInt8
-from balboa_core.msg import balboaLL
-from balboa_core.msg import balboaMotorSpeeds
+# from balboa_core.msg import balboaLL
+# from balboa_core.msg import balboaMotorSpeeds
+from lab1.msg import balboaLL
+from lab1.msg import balboaMotorSpeeds
 
 class TheNode(object):
   '''Class to communicate with the balboa robot. Carrick Detweiler 2020'''

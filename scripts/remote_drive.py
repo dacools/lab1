@@ -3,6 +3,7 @@ import rospy
 from lab1.msg import balboaMotorSpeeds # import motor speed message
 from std_msgs.msg import Header # import header message
 from geometry_msgs.msg import Twist # import Twist message
+from time import sleep
 
 def parse_msg(data, self):
     self.msg_data = data
@@ -27,7 +28,15 @@ def parse_msg(data, self):
         self.spdMsg.right = -1
     else:
         rospy.loginfo("Parse error")
+        
+    #publish the motor speeds
+    self.mtrSpd.publish(self.spdMsg)
 
+    sleep(.01)
+
+    # turn the motors off
+    self.spdMsg.left = 0
+    self.spdMsg.right = 0
     self.mtrSpd.publish(self.spdMsg)
 
 class TheNode(object):
