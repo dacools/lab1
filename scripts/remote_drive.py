@@ -9,23 +9,24 @@ def parse_msg(data, self):
     self.msg_data = data
     self.x = data.linear.x
     self.z = data.angular.z
+    speed = 15
 
     if self.x > 0:
         # move forward
-        self.spdMsg.left = 1
-        self.spdMsg.right = 1
+        self.spdMsg.left = 1*speed
+        self.spdMsg.right = 1*speed
     elif self.x < 0:
         # move backward
-        self.spdMsg.left = -1
-        self.spdMsg.right = -1
+        self.spdMsg.left = -1*speed
+        self.spdMsg.right = -1*speed
     elif self.z > 0:
         # turn left
-        self.spdMsg.left = -1
-        self.spdMsg.right = 1
+        self.spdMsg.left = -1*speed
+        self.spdMsg.right = 1*speed
     elif self.z < 0:
         # turn right
-        self.spdMsg.left = 1
-        self.spdMsg.right = -1
+        self.spdMsg.left = 1*speed
+        self.spdMsg.right = -1*speed
     else:
         rospy.loginfo("Parse error")
         
