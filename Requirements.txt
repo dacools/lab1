@@ -1,0 +1,19 @@
+PID controller
+	angular velocity
+	angle
+	distance
+
+keyboard number values for input for PID
+keyboard direction values for input for PID
+
+videos
+	distance
+	angle
+	"write" CS
+
+Remap balboa_serial.py to get input from either direction or number outputs
+
+Use parameters in launch file
+
+angle measurement discontinuity
+PID timing
