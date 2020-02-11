@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg="lab1" name="pid" type="pid.py"/>
+
+  <param name="rCtrl/P" type="double" value="0.0"/>
+  <param name="rCtrl/I" type="double" value="0.0"/>
+  <param name="rCtrl/D" type="double" value="0.0"/>
+
+</launch>
