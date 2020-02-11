@@ -10,15 +10,20 @@ class TheNode(object):
   def main_loop(self):
     rate = rospy.Rate(1) # 1 hz refresh rate
 
-    P = 1.0
-    I = 2.0
-    D = 3.0
-    rospy.set_param("rCtrl/P",P)
-    rospy.set_param("rCtrl/I",I)
-    rospy.set_param("rCtrl/D",D)
+    #P = 1.0
+    #I = 2.0
+    #D = 3.0
+    #rospy.set_param("rCtrl/P",P)
+    #rospy.set_param("rCtrl/I",I)
+    #rospy.set_param("rCtrl/D",D)
+
+    self.P = rospy.get_param("rCtrl/P")
+    self.I = rospy.get_param("rCtrl/I")
+    self.D = rospy.get_param("rCtrl/D")
 
     while not rospy.is_shutdown():
-      rospy.loginfo(rospy.get_param('rCtrl'))
+      #rospy.loginfo(rospy.get_param('rCtrl'))
+      rospy.loginfo('P: {0} I: {1} D: {2}'.format(self.P, self.I, self.D))
       rate.sleep()
 
 if __name__ == '__main__':
