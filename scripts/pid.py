@@ -1,5 +1,17 @@
 #!/usr/bin/env python
 import rospy
+from lab1.msg import pid_input
+from lab1.msg import pid_output
+
+def controller(data, self):
+  curr = data.current
+  tar = data.target
+
+  e_P = self.P*(tar-curr)
+
+  self.output.source = "ang_vel"
+  self.output.control_effort = e_P
+  self.target.publish(self.output)
 
 class TheNode(object):
   # This class holds the rospy logic for a generic PID controller
@@ -7,8 +19,13 @@ class TheNode(object):
   def __init__(self):
     rospy.init_node('pid', anonymous=True) # intialize node
 
+    self.target = rospy.Publisher('/control', pid_output, queue_size=10)
+    self.output = pid_output()
+    self.last_e = 0.0
+
   def main_loop(self):
-    rate = rospy.Rate(1) # 1 hz refresh rate
+    rate = rospy.Rate(10) # 10 hz refresh rate
+    rospy.Subscriber('/subscribe', pid_input, controller, self)
 
     #P = 1.0
     #I = 2.0
@@ -20,6 +37,7 @@ class TheNode(object):
     self.P = rospy.get_param("rCtrl/P")
     self.I = rospy.get_param("rCtrl/I")
     self.D = rospy.get_param("rCtrl/D")
+    rospy.spin()
 
     while not rospy.is_shutdown():
       #rospy.loginfo(rospy.get_param('rCtrl'))

@@ -49,6 +49,7 @@ class TheNode(object):
 
     rospy.init_node('remote_drive') # intialize node
 
+    
     # initialize publisher node for turtle 1
     self.mtrSpd = rospy.Publisher('/motorSpeeds', balboaMotorSpeeds, queue_size=10)
 

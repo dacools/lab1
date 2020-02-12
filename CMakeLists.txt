@@ -52,6 +52,8 @@ find_package(catkin REQUIRED COMPONENTS
    FILES
    balboaLL.msg
    balboaMotorSpeeds.msg
+   pid_input.msg
+   pid_output.msg
  )
 
 ## Generate services in the 'srv' folder
