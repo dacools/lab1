@@ -11,6 +11,7 @@ def parse_msg(data, self):
     self.z = data.angular.z
     speed = 15
 
+
     if self.x > 0:
         # move forward
         self.spdMsg.left = 1*speed
