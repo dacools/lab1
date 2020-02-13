@@ -6,12 +6,25 @@ from lab1.msg import pid_output
 def controller(data, self):
   curr = data.current
   tar = data.target
+  # Define the error turm e as (target - current)
+  e = tar-curr
 
-  e_P = self.P*(tar-curr)
+  # P term is P*(target-current)
+  e_P = self.P*e
 
-  self.output.source = "ang_vel"
-  self.output.control_effort = e_P
-  self.target.publish(self.output)
+  # D term is D*((target-current)-(previous_target-previous_current))
+  e_D = self.D*(e-self.e_1)
+
+  # I term is I*(previous_sum + (target-current))
+  e_I = self.I*(self.integral_1+e)
+
+  self.out.source = 'distance'
+  self.out.control_effort = e_P + e_I + e_D
+  self.target.publish(self.out)
+  rospy.loginfo(self.out)
+
+  self.e_1 = e
+  self.integral_1= self.integral_1+e
 
 class TheNode(object):
   # This class holds the rospy logic for a generic PID controller
@@ -20,8 +33,9 @@ class TheNode(object):
     rospy.init_node('pid', anonymous=True) # intialize node
 
     self.target = rospy.Publisher('/control', pid_output, queue_size=10)
-    self.output = pid_output()
-    self.last_e = 0.0
+    self.out = pid_output()
+    self.e_1 = 0
+    self.integral_1 = 0
 
   def main_loop(self):
     rate = rospy.Rate(10) # 10 hz refresh rate
