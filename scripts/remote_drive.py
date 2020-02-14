@@ -3,14 +3,13 @@ import rospy
 from lab1.msg import balboaMotorSpeeds # import motor speed message
 from std_msgs.msg import Header # import header message
 from geometry_msgs.msg import Twist # import Twist message
-from time import sleep
+from time import sleep # import sleep function
 
 def parse_msg(data, self):
-    self.msg_data = data
-    self.x = data.linear.x
-    self.z = data.angular.z
-    speed = 15
-
+    self.msg_data = data # unpack msg
+    self.x = data.linear.x # set linear component
+    self.z = data.angular.z # set angular component
+    speed = 15 #set speed multiplier
 
     if self.x > 0:
         # move forward
@@ -34,7 +33,7 @@ def parse_msg(data, self):
     #publish the motor speeds
     self.mtrSpd.publish(self.spdMsg)
 
-    sleep(.01)
+    sleep(0.01) # delay
 
     # turn the motors off
     self.spdMsg.left = 0
@@ -48,24 +47,23 @@ class TheNode(object):
   def __init__(self):
 
     rospy.init_node('remote_drive') # intialize node
-
     
-    # initialize publisher node for turtle 1
+    # initialize publisher node for motorSpeeds
     self.mtrSpd = rospy.Publisher('/motorSpeeds', balboaMotorSpeeds, queue_size=10)
 
     self.msg_data = Twist() # Twist variable for message received
-    self.x = 0
-    self.z = 0
-    self.spdMsg = balboaMotorSpeeds()
-    self.spdMsg.header = Header()
-    self.spdMsg.left = 0
-    self.spdMsg.right = 0
+    self.x = 0 # variable for linear component
+    self.z = 0 # variable for angular component
+    self.spdMsg = balboaMotorSpeeds() # default motor speed msg type
+    self.spdMsg.header = Header() # default header type
+    self.spdMsg.left = 0 # init left speed
+    self.spdMsg.right = 0 # init right speed
 
   def main_loop(self):
     # initialize subscriber node for messages from teleop_turtle_key
     rospy.Subscriber('/turtle1/cmd_vel', Twist, parse_msg, self)
 
-    rospy.spin()
+    rospy.spin() # wait for messages
 
 if __name__ == '__main__':
     try:
