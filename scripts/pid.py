@@ -30,14 +30,9 @@ def controller(data, self):
   err_D_l = self.D*(err_l - self.err_last_l)
   err_D_r = self.D*(err_r - self.err_last_r)
 
-<<<<<<< HEAD
-  self.output.source = 'distance' # set source TODO: make rosparam value
+  self.output.source = self.src # get source from rosparam
   self.output.control_left = err_P_l + err_I_l + err_D_l # set left control effort
   self.output.control_right = err_P_r + err_I_r + err_D_r # set right control effort
-=======
-  self.output.source = self.src # set source TODO: make rosparam value
-  self.output.control_effort = err_P + err_I + err_D # set control effort
->>>>>>> riley_branch
   self.target.publish(self.output) # publish output msg
 
   rospy.loginfo(self.output) # debug
