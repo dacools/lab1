@@ -10,11 +10,6 @@ def parse_control_msg(data, self):
   self.mtrspeed.right = data.control_right # unpack right control effort
 
   # Publish the motor speeds
-<<<<<<< HEAD
-=======
-  # self.pub.publish(self.mtrspeed)
-    
->>>>>>> riley_branch
   self.pub.publish(self.mtrspeed)
 
 class TheNode(object):
