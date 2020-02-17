@@ -3,9 +3,9 @@
   <remap from="/subscribe" to="/distance"/>
   <node pkg="lab1" name="pid1" type="pid.py"/>
     <param name="rCtrl/P" type="double" value="0.01"/>
-    <param name="rCtrl/I" type="double" value="0.00"/>
-    <param name="rCtrl/D" type="double" value="0.0"/>
- 
+    <param name="rCtrl/I" type="double" value="0.0"/>
+    <param name="rCtrl/D" type="double" value="0.01"/>
+
 
   <node pkg="lab1" name="controlled_drive" type="controlled_drive.py"/>
 
