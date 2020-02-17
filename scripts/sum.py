@@ -6,8 +6,8 @@ from lab1.msg import pid_output # import pid_output message
 
 def parse_control_msg(data, self):
   self.sender = data.source # unpack sender
-  self.mtrspeed.left = data.control_effort # unpack control effort
-  self.mtrspeed.right = data.control_effort # unpack control effort
+  self.mtrspeed.left = data.control_left # unpack left control effort
+  self.mtrspeed.right = data.control_right # unpack right control effort
 
   # Publish the motor speeds
   self.pub.publish(self.mtrspeed)

@@ -7,8 +7,7 @@ PI = 3.14159265358979 # global variable for PI
 
 def parse_balboa_msg(data, self):
     self.dist_left = data.distanceLeft # unpack left encoder
-    self.dist_Right = data.distanceRight # unpack right encoder
-    avg_dist = (self.dist_left+self.dist_Right)/2 # cal avg dist
+    self.dist_right = data.distanceRight # unpack right encoder
 
     # Encoder count per revolution is gear motor ratio (3344/65)
     # times gearbox ratio (2.14/1) times encoder revolution (12/1)
@@ -21,12 +20,15 @@ def parse_balboa_msg(data, self):
     DPC = distPR / CPR
 
     # convert encoder distance to mm
-    avg_dist = avg_dist * DPC
+    self.dist_left = self.dist_left * DPC
+    self.dist_right = self.dist_right * DPC
 
     # Publish the current and target dist values
-    self.dist_goal.current = avg_dist
-    self.dist_goal.target = self.dist_target
-    self.dist.publish(self.dist_goal)
+    self.dist_pid_input.current_left = self.dist_left
+    self.dist_pid_input.current_right = self.dist_right
+    self.dist_pid_input.target_left = self.dist_target
+    self.dist_pid_input.target_left = self.dist_target
+    self.dist.publish(self.dist_pid_input)
 
 class TheNode(object):
   # This class holds the rospy logic for sending pid_input messages
@@ -38,8 +40,11 @@ class TheNode(object):
     
     # initialize publisher node for distance PID controller
     self.dist = rospy.Publisher('/distance', pid_input, queue_size=10)
+    self.ang = rospy.Publisher('/ang', pid_input, queue_size=10)
 
-    self.dist_goal = pid_input() # default pid_input type
+    self.dist_left = 0 # init left distance
+    self.dist_right = 0 # init right distance
+    self.dist_pid_input = pid_input() # default pid_input type
     self.dist_target = 50 # travel 50 mm TODO: get from user
 
   def main_loop(self):

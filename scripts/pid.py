@@ -9,30 +9,41 @@ def controller(data, self):
   self.I = rospy.get_param("rCtrl/I")
   self.D = rospy.get_param("rCtrl/D")
 
-  curr = data.current # unpack current
-  tar = data.target # unpack target
+  curr_l = data.current_left # unpack current left
+  curr_r = data.current_right # unpack current right
+  tar_l = data.target_left # unpack target left
+  tar_r = data.target_right # unpack target right
 
   # err is (target - current)
-  err = tar - curr
+  err_l = tar_l - curr_l
+  err_r = tar_r - curr_r
 
   # err_P term is (P*err)
-  err_P = self.P*err
+  err_P_l = self.P*err_l
+  err_P_r = self.P*err_r
 
   # err_I term is (I*(err_sum + err)
-  err_I = self.I*(self.err_sum + err)
+  err_I_l = self.I*(self.err_sum_l + err_l)
+  err_I_r = self.I*(self.err_sum_r + err_r)
 
   # err_D term is (D*(err - err_last))
-  err_D = self.D*(err - self.err_last)
+  err_D_l = self.D*(err_l - self.err_last_l)
+  err_D_r = self.D*(err_r - self.err_last_r)
 
   self.output.source = 'distance' # set source TODO: make rosparam value
-  self.output.control_effort = err_P + err_I + err_D # set control effort
+  self.output.control_left = err_P_l + err_I_l + err_D_l # set left control effort
+  self.output.control_right = err_P_r + err_I_r + err_D_r # set right control effort
   self.target.publish(self.output) # publish output msg
 
   rospy.loginfo(self.output) # debug
 
   # err_last is (previous_target - previous_current)
-  self.e_last = err
-  self.err_sum = self.err_sum + err
+  self.err_last_l = err_l
+  self.err_last_r = err_r
+
+  # err_sum is accumulated err plus current err
+  self.err_sum_l = self.err_sum_l + err_l
+  self.err_sum_r = self.err_sum_r + err_r
 
 class TheNode(object):
   # This class holds the rospy logic for a generic PID controller
@@ -45,8 +56,10 @@ class TheNode(object):
     self.target = rospy.Publisher('/control', pid_output, queue_size=10)
 
     self.output = pid_output()  # default pid_output type
-    self.err_last = 0 # init derivative term
-    self.err_sum = 0 # init integral term
+    self.err_last_l = 0 # init left derivative term
+    self.err_last_r = 0 # init right derivative term
+    self.err_sum_l = 0 # init left integral term
+    self.err_sum_r = 0 # init right integral term
 
   def main_loop(self):
     # initialize subscriber node for messages from a generic source
