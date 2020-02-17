@@ -1,11 +1,28 @@
 <launch>
 
   <remap from="/subscribe" to="/distance"/>
+  <remap from="/control" to="/dist_control"/>
   <node pkg="lab1" name="pid1" type="pid.py"/>
     <param name="rCtrl/P" type="double" value="0.01"/>
     <param name="rCtrl/I" type="double" value="0.0"/>
     <param name="rCtrl/D" type="double" value="0.01"/>
+    <param name="rCtrl/src" type="string" value="distance"/>
 
+  <remap from="/subscribe" to="/ang"/>
+  <remap from="/control" to="/ang_control"/>
+  <node pkg="lab1" name="pid2" type="pid.py"/>
+    <param name="rCtrl/P" type="double" value="0.01"/>
+    <param name="rCtrl/I" type="double" value="0.0"/>
+    <param name="rCtrl/D" type="double" value="0.01"/>
+    <param name="rCtrl/src" type="string" value="angle"/>
+
+  <remap from="/subscribe" to="/ang_vel"/>
+  <remap from="/control" to="/ang_vel_control"/>
+  <node pkg="lab1" name="pid3" type="pid.py"/>
+    <param name="rCtrl/P" type="double" value="0.01"/>
+    <param name="rCtrl/I" type="double" value="0.0"/>
+    <param name="rCtrl/D" type="double" value="0.01"/>
+    <param name="rCtrl/src" type="string" value="ang_vel"/>
 
   <node pkg="lab1" name="controlled_drive" type="controlled_drive.py"/>
 

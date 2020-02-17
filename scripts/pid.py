@@ -24,7 +24,7 @@ def controller(data, self):
   # err_D term is (D*(err - err_last))
   err_D = self.D*(err - self.err_last)
 
-  self.output.source = 'distance' # set source TODO: make rosparam value
+  self.output.source = self.src # set source TODO: make rosparam value
   self.output.control_effort = err_P + err_I + err_D # set control effort
   self.target.publish(self.output) # publish output msg
 
@@ -49,13 +49,14 @@ class TheNode(object):
     self.err_sum = 0 # init integral term
 
   def main_loop(self):
-    # initialize subscriber node for messages from a generic source
+    # initialize subscriber node for messages from a generic source 
     rospy.Subscriber('/subscribe', pid_input, controller, self)
 
     # get initial rosparam values
     self.P = rospy.get_param("rCtrl/P")
     self.I = rospy.get_param("rCtrl/I")
     self.D = rospy.get_param("rCtrl/D")
+    self.src = rospy.get_param("rCtrl/src")
 
     rospy.spin() # wait for messages
 
