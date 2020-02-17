@@ -1,2 +1,3 @@
 string source
-float32 control_effort
+float32 control_left
+float32 control_right
