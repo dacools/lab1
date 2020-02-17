@@ -10,7 +10,12 @@ def parse_control_msg(data, self):
   self.mtrspeed.right = data.control_right # unpack right control effort
 
   # Publish the motor speeds
+<<<<<<< HEAD
+  # self.pub.publish(self.mtrspeed)
+    
+=======
   self.pub.publish(self.mtrspeed)
+>>>>>>> 79e641fa5213eefb321a2e9ba0f1007a624f22c7
 
 class TheNode(object):
   # This class holds the rospy logic for summing the PID outputs and publishing 
