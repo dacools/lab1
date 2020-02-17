@@ -17,7 +17,7 @@ def parse_msg(data, self):
   rospy.loginfo(self.mtrspeed)
 
   # Publish the motor speeds
-  self.pub.publish(self.mtrspeed)
+  # self.pub.publish(self.mtrspeed)
     
 
 class TheNode(object):
