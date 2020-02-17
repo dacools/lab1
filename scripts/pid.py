@@ -30,9 +30,14 @@ def controller(data, self):
   err_D_l = self.D*(err_l - self.err_last_l)
   err_D_r = self.D*(err_r - self.err_last_r)
 
+<<<<<<< HEAD
   self.output.source = 'distance' # set source TODO: make rosparam value
   self.output.control_left = err_P_l + err_I_l + err_D_l # set left control effort
   self.output.control_right = err_P_r + err_I_r + err_D_r # set right control effort
+=======
+  self.output.source = self.src # set source TODO: make rosparam value
+  self.output.control_effort = err_P + err_I + err_D # set control effort
+>>>>>>> riley_branch
   self.target.publish(self.output) # publish output msg
 
   rospy.loginfo(self.output) # debug
@@ -62,13 +67,14 @@ class TheNode(object):
     self.err_sum_r = 0 # init right integral term
 
   def main_loop(self):
-    # initialize subscriber node for messages from a generic source
+    # initialize subscriber node for messages from a generic source 
     rospy.Subscriber('/subscribe', pid_input, controller, self)
 
     # get initial rosparam values
     self.P = rospy.get_param("rCtrl/P")
     self.I = rospy.get_param("rCtrl/I")
     self.D = rospy.get_param("rCtrl/D")
+    self.src = rospy.get_param("rCtrl/src")
 
     rospy.spin() # wait for messages
 
