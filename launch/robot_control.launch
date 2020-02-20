@@ -30,18 +30,6 @@
 
   <node pkg="lab1" name="sum" type="sum.py"/>
 
-<!--
-  <node pkg="lab1" name="pid2" type="pid.py"/>
-    <param name="rCtrl/P" type="double" value="0.0"/>
-    <param name="rCtrl/I" type="double" value="0.0"/>
-    <param name="rCtrl/D" type="double" value="0.0"/>
-  </node>
+  <node pkg="lab1" name="ang_vel" type="ang_to_ang_vel.py"/>
 
-  <node pkg="lab1" name="pid3" type="pid.py"/>
-    <param name="rCtrl/P" type="double" value="0.0"/>
-    <param name="rCtrl/I" type="double" value="0.0"/>
-    <param name="rCtrl/D" type="double" value="0.0"/>
-  </node>
-
-  -->
 </launch>

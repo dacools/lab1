@@ -4,13 +4,17 @@ from lab1.msg import balboaMotorSpeeds # import motor speed message
 from std_msgs.msg import Header # import header message
 from lab1.msg import pid_output # import pid_output message
 
-def parse_control_msg(data, self):
+def parse_dist_msg(data, self):
   self.sender = data.source # unpack sender
   self.mtrspeed.left = data.control_left # unpack left control effort
   self.mtrspeed.right = data.control_right # unpack right control effort
 
   # Publish the motor speeds
   self.pub.publish(self.mtrspeed)
+
+
+def parse_ang_vel_msg(data, self):
+  pass
 
 class TheNode(object):
   # This class holds the rospy logic for summing the PID outputs and publishing 
@@ -31,7 +35,8 @@ class TheNode(object):
 
   def main_loop(self):
     # initialize subscriber node for messages from a pid controller
-    rospy.Subscriber('/control', pid_output, parse_control_msg, self)
+    rospy.Subscriber('/ang_vel_control', pid_output, parse_ang_vel_msg, self)
+    rospy.Subscriber('/dist_control', pid_output, parse_dist_msg, self)
 
     rospy.spin() # wait for messages
 

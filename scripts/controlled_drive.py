@@ -27,7 +27,7 @@ def parse_balboa_msg(data, self):
     self.dist_pid_input.current_left = self.dist_left
     self.dist_pid_input.current_right = self.dist_right
     self.dist_pid_input.target_left = self.dist_target
-    self.dist_pid_input.target_left = self.dist_target
+    self.dist_pid_input.target_right = self.dist_target
     self.dist.publish(self.dist_pid_input)
 
 class TheNode(object):
@@ -45,7 +45,7 @@ class TheNode(object):
     self.dist_left = 0 # init left distance
     self.dist_right = 0 # init right distance
     self.dist_pid_input = pid_input() # default pid_input type
-    self.dist_target = 50 # travel 50 mm TODO: get from user
+    self.dist_target = 200 # travel 40 mm TODO: get from user
 
   def main_loop(self):
     # initialize subscriber node for messages from balboa robot

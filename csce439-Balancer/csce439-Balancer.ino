@@ -143,6 +143,8 @@ void sendDebugData(){
  Serial.print(" r: "); Serial.println(speedRight);
  Serial.print("Dist l: "); Serial.print(distanceLeft);
  Serial.print(" r: "); Serial.println(distanceRight);
+ Serial.print("Counts l: "); Serial.print(encoders.getCountsLeft());
+ Serial.print(" r: "); Serial.println(encoders.getCountsRight());
 
  lastMS = currentMS;
 }
@@ -192,6 +194,8 @@ void sendDataToROS(){
   sendSignedInt32MSBAndUpdateChecksum(speedRight,&checksum);
   sendSignedInt32MSBAndUpdateChecksum(distanceLeft,&checksum);
   sendSignedInt32MSBAndUpdateChecksum(distanceRight,&checksum);
+  sendSignedInt32MSBAndUpdateChecksum(encoders.getCountsLeft(),&checksum);
+  sendSignedInt32MSBAndUpdateChecksum(encoders.getCountsRight(),&checksum);
 
   /* //Some unit tests
   sendSignedInt32MSBAndUpdateChecksum(0,&checksum);

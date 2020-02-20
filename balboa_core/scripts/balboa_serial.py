@@ -89,6 +89,9 @@ class TheNode(object):
       msg.speedRight = self.readFourByteAndChecksum()
       msg.distanceLeft = self.readFourByteAndChecksum()
       msg.distanceRight = self.readFourByteAndChecksum()
+      msg.encoderCountLeft = self.readFourByteAndChecksum()
+      msg.encoderCountRight = self.readFourByteAndChecksum()
+
 
       # print("~~~~~~~")
       # print "should be 0: ", self.readFourByteAndChecksum()
