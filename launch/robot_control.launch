@@ -3,9 +3,10 @@
   <remap from="/subscribe" to="/distance"/>
   <remap from="/control" to="/dist_control"/>
   <node pkg="lab1" name="pid1" type="pid.py"/>
+  <!--These values have been tested and work pretty well-->
     <param name="rCtrl/P" type="double" value="0.03"/>
     <param name="rCtrl/I" type="double" value="0.0"/>
-    <param name="rCtrl/D" type="double" value="0.001"/>
+    <param name="rCtrl/D" type="double" value="0.01"/>
     <param name="rCtrl/src" type="string" value="distance"/>
 
   <remap from="/subscribe" to="/ang"/>
