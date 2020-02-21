@@ -12,9 +12,8 @@ def parse_dist_msg(data, self):
   # Publish the motor speeds
   self.pub.publish(self.mtrspeed)
 
-
 def parse_ang_vel_msg(data, self):
-  pass
+  rospy.loginfo(data)
 
 class TheNode(object):
   # This class holds the rospy logic for summing the PID outputs and publishing 
