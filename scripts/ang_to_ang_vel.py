@@ -1,19 +1,13 @@
 #!/usr/bin/env python
 import rospy
-# from lab1.msg import balboaMotorSpeeds # import motor speed message
-from std_msgs.msg import Header # import header message
 from lab1.msg import pid_output # import pid_output message
 from lab1.msg import pid_input # import pid_output message
 
 def parse_ang_control_msg(data, self):
-  pass
-
+  rospy.loginfo(data)
 
 def parse_ang_msg(data, self):
-  pass
-
-
-
+  rospy.loginfo(data)
 
 class TheNode(object):
   # This class holds the rospy logic for summing the PID outputs and publishing 
