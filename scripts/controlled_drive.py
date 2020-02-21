@@ -10,7 +10,7 @@ def parse_balboa_msg(data, self):
     # self.dist_right = data.distanceRight # unpack right encoder
     self.dist_left = data.encoderCountLeft # unpack left encoder
     self.dist_right = data.encoderCountRight # unpack right encoder
-    self.dist_target = rospy.get_param("rCtrl/dist_target")
+    self.dist_target = rospy.get_param("rCtrl/dist_target") # unpack target dist
 
     # Encoder count per revolution is gear motor ratio (3344/65)
     # times gearbox ratio (2.14/1) times encoder revolution (12/1)
@@ -35,7 +35,7 @@ def parse_balboa_msg(data, self):
 
 class TheNode(object):
   # This class holds the rospy logic for sending pid_input messages
-  # from a published balboa message and TODO: user input 
+  # from a published balboa message and user input 
 
   def __init__(self):
 
@@ -48,8 +48,7 @@ class TheNode(object):
     self.dist_left = 0 # init left distance
     self.dist_right = 0 # init right distance
     self.dist_pid_input = pid_input() # default pid_input type
-    self.dist_target = rospy.get_param("rCtrl/dist_target")
-    # self.dist_target = 200 # travel 40 mm TODO: get from user
+    self.dist_target = rospy.get_param("rCtrl/dist_target") # get dist target from user
 
   def main_loop(self):
     # initialize subscriber node for messages from balboa robot
