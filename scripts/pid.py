@@ -8,6 +8,7 @@ def controller(data, self):
   self.P = rospy.get_param("rCtrl/P")
   self.I = rospy.get_param("rCtrl/I")
   self.D = rospy.get_param("rCtrl/D")
+  self.src = rospy.get_param("rCtrl/src")
 
   curr_l = data.current_left # unpack current left
   curr_r = data.current_right # unpack current right
