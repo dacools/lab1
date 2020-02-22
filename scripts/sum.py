@@ -14,8 +14,8 @@ def parse_dist_msg(data, self):
 
 def parse_ang_vel_msg(data, self):
   self.sender = data.source # unpack sender
-  self.mtrspeed.left = -1 * data.control_left # unpack and invert left control effort
-  self.mtrspeed.right = data.control_right # unpack right control effort
+  self.mtrspeed.left = -0.5 * data.control_left # unpack, invert and scale left control effort
+  self.mtrspeed.right = 0.5 * data.control_left # unpack and scale left control effort
 
   # Publish the motor speeds
   self.pub.publish(self.mtrspeed)
