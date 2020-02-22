@@ -13,7 +13,12 @@ def parse_dist_msg(data, self):
   self.pub.publish(self.mtrspeed)
 
 def parse_ang_vel_msg(data, self):
-  rospy.loginfo(data)
+  self.sender = data.source # unpack sender
+  self.mtrspeed.left = -1 * data.control_left # unpack and invert left control effort
+  self.mtrspeed.right = data.control_right # unpack right control effort
+
+  # Publish the motor speeds
+  self.pub.publish(self.mtrspeed)
 
 class TheNode(object):
   # This class holds the rospy logic for summing the PID outputs and publishing 
