@@ -6,23 +6,37 @@ from lab1.msg import pid_input # import pid_input message
 PI = 3.14159265358979 # global variable for PI
 
 def parse_balboa_msg(data, self):
+    self.ang_left = data.angleX # unpack angle X
+    self.ang_right = 0 # unused
+    temp_ang = rospy.get_param('angle/target') # get angle target from user
+    if temp_ang != self.ang_target:
+        # angle target updated
+        self.ang_target = temp_ang
+        self.dist_updated = False
+
+    # adjust distance target based on target angle
+    if not self.dist_updated:
+        # get distances
+        self.dist_tar_left = rospy.get_param('distance/tar/left')
+        self.dist_tar_right = rospy.get_param('distance/tar/right')
+
+        dist_adj = (self.ang_target / 360) * self.ECX # calculate adjustment
+
+        self.dist_tar_left = self.dist_tar_left - dist_adj
+        self.dist_tar_left = self.dist_tar_left + dist_adj
+        rospy.set_param('distance/tar/left',self.dist_tar_left)
+        rospy.set_param('distance/tar/right',self.dist_tar_left)
+        self.dist_updated = True
+
     self.dist_left = data.encoderCountLeft # unpack left encoder
     self.dist_right = data.encoderCountRight # unpack right encoder
     #self.dist_target = rospy.get_param('distance/target') # get distance target from user
     self.dist_tar_left = rospy.get_param('distance/tar/left') # get distance target from user
     self.dist_tar_right = rospy.get_param('distance/tar/right') # get distance target from user
 
-    self.ang_left = data.angleX # unpack angle X
-    self.ang_right = 0 # unused
-    self.ang_target = rospy.get_param('angle/target') # get angle target from user
-
     # convert encoder distance to mm
     self.dist_left = self.dist_left * self.DPC
     self.dist_right = self.dist_right * self.DPC
-
-    # adjust distance target based on target angle
-    #self.dist_left = self.dist_left - (self.ang_target * )
-    #self.dist_right = self.dist_right * self.DPC
 
     # convert angle reading from millidegrees to degrees
     self.ang_left = self.ang_left / 1000
@@ -65,13 +79,19 @@ class TheNode(object):
 
     # Encoder count per revolution is gear motor ratio (3344/65)
     # times gearbox ratio (2.14/1) times encoder revolution (12/1)
-    self.CPR = (3344 / 65) * 2.14 * 12
+    CPR = (3344 / 65) * 2.14 * 12
 
     # Distance per revolution is 2 PI times wheel radius (40 mm)
-    self.distPR = 2*PI*40
+    distPR = 2*PI*40
 
     # Distance per encoder count is distPR / CPR
-    self.DPC = self.distPR / self.CPR
+    self.DPC = distPR / CPR
+
+    # Wheel distance per x-axis revolution is 2 PI times wheel spacing (102 mm)
+    wDistPR = 2*PI*102
+
+    # Encoder count per x-axis angle is half of wDistPR / DPC
+    self.ECX = 0.5 * (wDistPR / self.DPC)
 
     # initialize publisher node for angle PID controller
     self.ang = rospy.Publisher('/ang', pid_input, queue_size=10)
@@ -79,6 +99,8 @@ class TheNode(object):
     self.ang_right = 0 # init right angle
     self.ang_pid_input = pid_input() # default pid_input type
     self.ang_target = rospy.get_param('angle/target') # init angle target
+    self.ang_tar_old = 0
+    self.dist_updated = True
 
   def main_loop(self):
     # initialize subscriber node for messages from balboa robot
