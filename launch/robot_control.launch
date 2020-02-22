@@ -42,7 +42,7 @@
   <param name="angle_vel/I" type="double" value="0.0"/>
   <param name="angle_vel/D" type="double" value="0.0"/>-->
 
-  <param name="angle_vel/P" type="double" value="0.01"/>
+  <param name="angle_vel/P" type="double" value="0.17"/>
   <param name="angle_vel/I" type="double" value="0.0"/>
   <param name="angle_vel/D" type="double" value="0.0"/>
 
