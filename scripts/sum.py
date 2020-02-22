@@ -38,7 +38,7 @@ class TheNode(object):
     self.sender = '' # init sender name
 
   def main_loop(self):
-    # initialize subscriber node for messages from a pid controller
+    # initialize subscriber nodes for messages from the pid controllers
     rospy.Subscriber('/ang_vel_control', pid_output, parse_ang_vel_msg, self)
     rospy.Subscriber('/dist_control', pid_output, parse_dist_msg, self)
 
