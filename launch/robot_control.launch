@@ -50,7 +50,7 @@
 
   <node pkg="turtlesim" name="arrow_key_input" type="turtle_teleop_key"/>
 
-  <node pkg="lab1" name="multiplier_input" type="key_board_input.py"/>
+  <node pkg="lab1" name="key_board_input" type="key_board_input.py"/>
 
   <node pkg="lab1" name="multiplier_input" type="pid_remote_drive.py"/>
 
