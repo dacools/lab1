@@ -9,23 +9,25 @@ def parse_balboa_msg(data, self):
     self.ang_left = data.angleX # unpack angle X
     self.ang_right = 0 # unused
     temp_ang = rospy.get_param('angle/target') # get angle target from user
-    if temp_ang != self.ang_target:
+    if not temp_ang == self.ang_target:
         # angle target updated
+        self.ang_diff = self.ang_target - temp_ang
         self.ang_target = temp_ang
         self.dist_updated = False
 
     # adjust distance target based on target angle
     if not self.dist_updated:
         # get distances
-        self.dist_tar_left = rospy.get_param('distance/tar/left')
-        self.dist_tar_right = rospy.get_param('distance/tar/right')
+        self.dist_tar_left = rospy.get_param('distance/tar/left') # get current left
+        self.dist_tar_right = rospy.get_param('distance/tar/right') # get current right
 
-        dist_adj = (self.ang_target / 360) * self.ECX # calculate adjustment
+        dist_adj = (self.ang_diff / 360) * self.ECX # calculate adjustment
 
-        self.dist_tar_left = self.dist_tar_left - dist_adj
-        self.dist_tar_left = self.dist_tar_left + dist_adj
-        rospy.set_param('distance/tar/left',self.dist_tar_left)
-        rospy.set_param('distance/tar/right',self.dist_tar_left)
+        self.dist_tar_left = self.dist_tar_left - dist_adj # apply left adjustment
+        self.dist_tar_right = self.dist_tar_right + dist_adj # apply right adjustment
+
+        rospy.set_param('distance/tar/left',self.dist_tar_left) # broadcast left adjustment
+        rospy.set_param('distance/tar/right',self.dist_tar_right) # broadcast right adjustment
         self.dist_updated = True
 
     self.dist_left = data.encoderCountLeft # unpack left encoder
@@ -99,6 +101,7 @@ class TheNode(object):
     self.ang_right = 0 # init right angle
     self.ang_pid_input = pid_input() # default pid_input type
     self.ang_target = rospy.get_param('angle/target') # init angle target
+    self.ang_diff = 0 # angular differance variable
     self.dist_updated = True
 
   def main_loop(self):
