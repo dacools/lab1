@@ -2,7 +2,6 @@
 import rospy
 from geometry_msgs.msg import Twist # import Twist message
 
-
 class TheNode(object):
   # This class holds the rospy logic for sending an angle or distance multiplier
 
@@ -15,9 +14,10 @@ class TheNode(object):
     self.key = Twist()
     self.key.linear.y = 1
     self.key.angular.y = 1
+
   def main_loop(self):
         # wait for an input from the user
-        while 1:
+        while not rospy.is_shutdown():
             abc = input("Enter '1' through '5' to change distance multiplier, and '6' through '10' to change the angle multiplier. Then press 'Enter' ")
 
             if abc < 6:
