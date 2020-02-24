@@ -16,25 +16,24 @@ class TheNode(object):
     self.key.angular.y = 1
 
   def main_loop(self):
-        # wait for an input from the user
+    # define input prompt string
+    inputStr = "Enter '1' through '5' to change distance multiplier\n"
+    inputStr = inputStr + "Or enter '6' through '10' to change the angle multiplier\n"
+    inputStr = inputStr + "Press 'Enter' to send the multiplier to balboa\n"
 
-        inputStr = "Enter '1' through '5' to change distance multiplier\n"
-        inputStr = inputStr + "Or enter '6' through '10' to change the angle multiplier\n"
-        inputStr = inputStr + "Press 'Enter' to send the multiplier to balboa\n"
+    while not rospy.is_shutdown(): # wait for an input from the user
+      abc = input(inputStr)
 
-        while not rospy.is_shutdown():
-            abc = input(inputStr)
+      if abc < 6:
+          # change the distance multiplier
+          self.key.linear.y = int(abc)
+      elif abc < 11:
+          # change the angle multiplier 
+          self.key.angular.y = int(abc)-5
+      else:
+          print 'Input not valid, try again.'
 
-            if abc < 6:
-                # change the distance multiplier
-                self.key.linear.y = int(abc)
-            elif abc < 11:
-                # change the angle multiplier 
-                self.key.angular.y = int(abc)-5
-            else:
-                print 'Input not valid, try again.'
-
-            self.pub.publish(self.key)
+      self.pub.publish(self.key)
 
 if __name__ == '__main__':
     try:
