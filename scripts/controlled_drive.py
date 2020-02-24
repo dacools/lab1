@@ -6,12 +6,6 @@ from lab1.msg import pid_input # import pid_input message
 PI = 3.14159265358979 # global variable for PI
 
 def parse_balboa_msg(data, self):
-<<<<<<< HEAD
-    # self.dist_left = data.distanceLeft # unpack left encoder
-    # self.dist_right = data.distanceRight # unpack right encoder
-    self.dist_left = data.encoderCountLeft # unpack left encoder
-    self.dist_right = data.encoderCountRight # unpack right encoder
-=======
     self.ang_left = data.angleX # unpack angle X
     self.ang_right = 0 # unused
     temp_ang = rospy.get_param('angle/target') # get angle target from user
@@ -19,7 +13,6 @@ def parse_balboa_msg(data, self):
         # angle target updated
         self.ang_target = temp_ang
         self.dist_updated = False
->>>>>>> angPID
 
     # adjust distance target based on target angle
     if not self.dist_updated:
