@@ -10,8 +10,8 @@ def turtle_msg(data, self):
     self.x = data.linear.x # set linear component
     self.z = data.angular.z # set angular component
 
-    dist = 100*self.distance_multiplier # set a distance offset
-    ang = 15*self.angle_multiplier # set the angle offest
+    dist = 75*self.distance_multiplier # set a distance offset
+    ang = 25*self.angle_multiplier # set the angle offest
 
     # retrieve the target parameters
     self.left = rospy.get_param("distance/tar/left")
@@ -28,10 +28,10 @@ def turtle_msg(data, self):
         self.right = self.right - dist
     elif self.z > 0:
         # turn left
-        self.angle = self.angle - ang
+        self.angle = self.angle + ang
     elif self.z < 0:
         # turn right
-        self.angle = self.angle + ang
+        self.angle = self.angle - ang
     else:
         rospy.loginfo("Parse error")
 

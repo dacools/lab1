@@ -6,17 +6,20 @@ from lab1.msg import pid_output # import pid_output message
 
 def parse_dist_msg(data, self):
   self.sender = data.source # unpack sender
-  self.mtrspeed.left = data.control_left # unpack left control effort
+  #self.mtrspeed.left = data.control_left # unpack left control effort
+  self.mtrspeed.left = data.control_right
   self.mtrspeed.right = data.control_right # unpack right control effort
 
   self.mtrspeed.left = self.mtrspeed.left + self.angle_l # sum with left angle effort
-  self.mtrspeed.right = self.mtrspeed.right + self.angle_r # sum with right angle effort
+  #self.mtrspeed.right = self.mtrspeed.right + self.angle_r # sum with right angle effort
 
   self.pub.publish(self.mtrspeed) # Publish the motor speeds
 
 def parse_ang_vel_msg(data, self):
-  self.angle_l = -0.5 * data.control_left # unpack, invert and scale left control effort
-  self.angle_r = 0.5 * data.control_left # unpack and scale left control effort
+  #self.angle_l = -0.5 * data.control_left # unpack, invert and scale left control effort
+  #self.angle_r = 0.5 * data.control_left # unpack and scale left control effort
+
+  self.angle_l = data.control_left # unpack left control effort
 
 class TheNode(object):
   # This class holds the rospy logic for summing the PID outputs and publishing 

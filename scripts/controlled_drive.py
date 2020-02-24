@@ -13,7 +13,7 @@ def parse_balboa_msg(data, self):
         # angle target updated
         self.ang_diff = self.ang_target - temp_ang
         self.ang_target = temp_ang
-        self.dist_updated = False
+        '''self.dist_updated = False
 
     # adjust distance target based on target angle
     if not self.dist_updated:
@@ -28,7 +28,7 @@ def parse_balboa_msg(data, self):
 
         rospy.set_param('distance/tar/left',self.dist_tar_left) # broadcast left adjustment
         rospy.set_param('distance/tar/right',self.dist_tar_right) # broadcast right adjustment
-        self.dist_updated = True
+        self.dist_updated = True'''
 
     self.dist_left = data.encoderCountLeft # unpack left encoder
     self.dist_right = data.encoderCountRight # unpack right encoder
@@ -45,11 +45,13 @@ def parse_balboa_msg(data, self):
 
     # Publish the current and target distance values
     self.dist_pid_input.source = 'distance'
-    self.dist_pid_input.current_left = self.dist_left
+    #self.dist_pid_input.current_left = self.dist_left
+    self.dist_pid_input.current_left = 0
     self.dist_pid_input.current_right = self.dist_right
     #self.dist_pid_input.target_left = self.dist_target
     #self.dist_pid_input.target_right = self.dist_target
-    self.dist_pid_input.target_left = self.dist_tar_left
+    #self.dist_pid_input.target_left = self.dist_tar_left
+    self.dist_pid_input.target_left = 0
     self.dist_pid_input.target_right = self.dist_tar_right
     self.dist.publish(self.dist_pid_input)
 
