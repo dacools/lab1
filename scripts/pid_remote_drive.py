@@ -3,8 +3,8 @@ import rospy
 from geometry_msgs.msg import Twist # import Twist message
 
 def multiplier_msg(data,self):
-    self.distance_multiplier = data.linear.y
-    self.angle_multiplier = data.angular.y
+    self.distance_multiplier = data.linear.y # set linear multiplier
+    self.angle_multiplier = data.angular.y # set angular multiplier
 
 def turtle_msg(data, self):
     self.x = data.linear.x # set linear component
@@ -14,18 +14,15 @@ def turtle_msg(data, self):
     ang = 25*self.angle_multiplier # set the angle offest
 
     # retrieve the target parameters
-    self.left = rospy.get_param("distance/tar/left")
-    self.right = rospy.get_param("distance/tar/right")
+    self.distance = rospy.get_param("distance/target")
     self.angle = rospy.get_param("angle/target")
 
     if self.x > 0:
         # move forward
-        self.left = self.left + dist
-        self.right = self.right + dist
+        self.distance = self.distance + dist
     elif self.x < 0:
         # move backward
-        self.left = self.left - dist
-        self.right = self.right - dist
+        self.distance = self.distance - dist
     elif self.z > 0:
         # turn left
         self.angle = self.angle + ang
@@ -35,34 +32,33 @@ def turtle_msg(data, self):
     else:
         rospy.loginfo("Parse error")
 
-    rospy.set_param("distance/tar/left",self.left)
-    rospy.set_param("distance/tar/right",self.right)
+    # set the target parameters
+    rospy.set_param("distance/target",self.distance)
     rospy.set_param("angle/target",self.angle)
 
 class TheNode(object):
-  # This class holds the rospy logic for updating the PID targets
-  # from a published teleop_turtle_key message or keyboard input
+    # This class holds the rospy logic for updating the PID targets
+    # from a published teleop_turtle_key message or keyboard input
 
-  def __init__(self):
+    def __init__(self):
 
-    rospy.init_node('pid_remote_drive') # intialize node
+        rospy.init_node('pid_remote_drive') # intialize node
 
-    self.x = 0 # linear component variable
-    self.z = 0 # angular component variable
+        self.x = 0 # linear component variable
+        self.z = 0 # angular component variable
 
-    self.left = 0 # left distance variable
-    self.right = 0 # right distance variable
-    self.angle = 0 # angle variable
+        self.distance = 0 # distance variable
+        self.angle = 0 # angle variable
 
-    self.angle_multiplier = 1 # angle multiplier variable
-    self.distance_multiplier = 1 # distance multiplier variable
+        self.angle_multiplier = 1 # angle multiplier variable
+        self.distance_multiplier = 1 # distance multiplier variable
 
-  def main_loop(self):
-    # initialize subscriber node for messages from teleop_turtle_key
-    rospy.Subscriber('/turtle1/cmd_vel', Twist, turtle_msg, self)
-    rospy.Subscriber('/key_input', Twist, multiplier_msg, self)
+    def main_loop(self):
+        # initialize subscriber node for messages from teleop_turtle_key
+        rospy.Subscriber('/turtle1/cmd_vel', Twist, turtle_msg, self)
+        rospy.Subscriber('/key_input', Twist, multiplier_msg, self)
 
-    rospy.spin() # wait for messages
+        rospy.spin() # wait for messages
 
 if __name__ == '__main__':
     try:
