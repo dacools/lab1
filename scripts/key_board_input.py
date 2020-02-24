@@ -17,8 +17,13 @@ class TheNode(object):
 
   def main_loop(self):
         # wait for an input from the user
+
+        inputStr = "Enter '1' through '5' to change distance multiplier\n"
+        inputStr = inputStr + "Or enter '6' through '10' to change the angle multiplier\n"
+        inputStr = inputStr + "Press 'Enter' to send the multiplier to balboa\n"
+
         while not rospy.is_shutdown():
-            abc = input("Enter '1' through '5' to change distance multiplier, and '6' through '10' to change the angle multiplier. Then press 'Enter' ")
+            abc = input(inputStr)
 
             if abc < 6:
                 # change the distance multiplier
