@@ -13,13 +13,13 @@
   <node pkg="lab1" name="dist_pid" type="pid.py"/>
 
   <!--These values have been tested and work pretty well-->
-    <!--<param name="distance/P" type="double" value="0.03"/>
+    <param name="distance/P" type="double" value="0.03"/>
     <param name="distance/I" type="double" value="0.0"/>
-    <param name="distance/D" type="double" value="0.01"/>-->
+    <param name="distance/D" type="double" value="0.01"/>
 
-    <param name="distance/P" type="double" value="0.0"/>
+    <!--<param name="distance/P" type="double" value="0.0"/>
     <param name="distance/I" type="double" value="0.0"/>
-    <param name="distance/D" type="double" value="0.0"/>
+    <param name="distance/D" type="double" value="0.0"/>-->
 
   <remap from="/subscribe" to="/ang"/>
   <remap from="/control" to="/ang_control"/>
@@ -48,11 +48,9 @@
 
   <node pkg="lab1" name="sum" type="sum.py"/>
 
-  <node pkg="turtlesim" name="arrow_key_input" type="turtle_teleop_key"/>
+  <node pkg="turtlesim" name="turtle_teleop_key" type="turtle_teleop_key"/>
 
-  <node pkg="lab1" name="key_board_input" type="key_board_input.py"/>
-
-  <node pkg="lab1" name="multiplier_input" type="pid_remote_drive.py"/>
+  <node pkg="lab1" name="pid_remote_drive" type="pid_remote_drive.py"/>
 
 
 </launch>
