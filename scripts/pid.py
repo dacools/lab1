@@ -4,10 +4,12 @@ from lab1.msg import pid_input # import pid_input message
 from lab1.msg import pid_output # import pid_output message
 
 def controller(data, self):
+  source = data.source # unpack message source
+
   # get most recent rosparam values
-  self.P = rospy.get_param("rCtrl/P")
-  self.I = rospy.get_param("rCtrl/I")
-  self.D = rospy.get_param("rCtrl/D")
+  self.P = rospy.get_param('{0}/P'.format(source))
+  self.I = rospy.get_param('{0}/I'.format(source))
+  self.D = rospy.get_param('{0}/D'.format(source))
 
   curr_l = data.current_left # unpack current left
   curr_r = data.current_right # unpack current right
@@ -30,7 +32,7 @@ def controller(data, self):
   err_D_l = self.D*(err_l - self.err_last_l)
   err_D_r = self.D*(err_r - self.err_last_r)
 
-  self.output.source = self.src # get source from rosparam
+  self.output.source = source # set source
   self.output.control_left = err_P_l + err_I_l + err_D_l # set left control effort
   self.output.control_right = err_P_r + err_I_r + err_D_r # set right control effort
   self.target.publish(self.output) # publish output msg
@@ -64,12 +66,6 @@ class TheNode(object):
   def main_loop(self):
     # initialize subscriber node for messages from a generic source 
     rospy.Subscriber('/subscribe', pid_input, controller, self)
-
-    # get initial rosparam values
-    self.P = rospy.get_param("rCtrl/P")
-    self.I = rospy.get_param("rCtrl/I")
-    self.D = rospy.get_param("rCtrl/D")
-    self.src = rospy.get_param("rCtrl/src")
 
     rospy.spin() # wait for messages
 
