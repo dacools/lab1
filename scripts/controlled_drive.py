@@ -99,7 +99,6 @@ class TheNode(object):
     self.ang_right = 0 # init right angle
     self.ang_pid_input = pid_input() # default pid_input type
     self.ang_target = rospy.get_param('angle/target') # init angle target
-    self.ang_tar_old = 0
     self.dist_updated = True
 
   def main_loop(self):
