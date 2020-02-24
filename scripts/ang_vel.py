@@ -4,16 +4,19 @@ from lab1.msg import pid_output # import pid_output message
 from lab1.msg import pid_input # import pid_output message
 
 def parse_ang_control_msg(data, self):
-    # check if angle_vel control is needed
-    if not self.ang_reached:
-        # Publish the current and target angle_vel values
-        self.ang_vel_pid_input.source = 'angle_vel'
-        self.ang_vel_pid_input.current_left = data.control_left
-        self.ang_vel_pid_input.current_right = 0 # unused
-        self.ang_vel_pid_input.target_left = rospy.get_param('angle_vel/target')
-        self.ang_vel_pid_input.target_right = 0 # unused
+    self.ang_vel_pid_input.source = 'angle_vel' # set source
+    self.ang_vel_pid_input.current_left = 0 # set initial angle
+    self.ang_vel_pid_input.current_right = 0 # unused
+    self.ang_vel_pid_input.target_left = 0 # set initial target
+    self.ang_vel_pid_input.target_right = 0 # unused
 
-        self.ang_vel.publish(self.ang_vel_pid_input)
+    if not self.ang_reached:
+        # update variables when ang_vel_control is needed
+        self.ang_vel_pid_input.current_left = data.control_left # set current
+        self.ang_vel_pid_input.target_left = rospy.get_param('angle_vel/target') # set target
+
+    # Publish the current and target angle_vel values
+    self.ang_vel.publish(self.ang_vel_pid_input)
 
 def parse_ang_msg(data, self):
     curr = data.current_left # unpack current angle
