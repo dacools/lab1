@@ -10,7 +10,6 @@ def parse_balboa_msg(data, self):
     # self.dist_right = data.distanceRight # unpack right encoder
     self.dist_left = data.encoderCountLeft # unpack left encoder
     self.dist_right = data.encoderCountRight # unpack right encoder
-    self.dist_target = rospy.get_param("rCtrl/dist_target")
 
     # Encoder count per revolution is gear motor ratio (3344/65)
     # times gearbox ratio (2.14/1) times encoder revolution (12/1)
