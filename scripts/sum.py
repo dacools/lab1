@@ -9,16 +9,14 @@ def parse_dist_msg(data, self):
   self.mtrspeed.left = data.control_left # unpack left control effort
   self.mtrspeed.right = data.control_right # unpack right control effort
 
-  # Publish the motor speeds
-  self.pub.publish(self.mtrspeed)
+  self.mtrspeed.left = self.mtrspeed.left + self.angle_l # sum with left angle effort
+  self.mtrspeed.right = self.mtrspeed.right + self.angle_r # sum with right angle effort
+
+  self.pub.publish(self.mtrspeed) # Publish the motor speeds
 
 def parse_ang_vel_msg(data, self):
-  self.sender = data.source # unpack sender
-  self.mtrspeed.left = -0.5 * data.control_left # unpack, invert and scale left control effort
-  self.mtrspeed.right = 0.5 * data.control_left # unpack and scale left control effort
-
-  # Publish the motor speeds
-  self.pub.publish(self.mtrspeed)
+  self.angle_l = -0.5 * data.control_left # unpack, invert and scale left control effort
+  self.angle_r = 0.5 * data.control_left # unpack and scale left control effort
 
 class TheNode(object):
   # This class holds the rospy logic for summing the PID outputs and publishing 
@@ -36,6 +34,10 @@ class TheNode(object):
     self.mtrspeed.left = 0 # init left speed
     self.mtrspeed.right = 0 # init right speed
     self.sender = '' # init sender name
+
+    # init variables to sum distance and angle control efforts
+    self.angle_l = 0
+    self.angle_r = 0
 
   def main_loop(self):
     # initialize subscriber nodes for messages from the pid controllers
